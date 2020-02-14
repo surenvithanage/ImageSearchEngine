@@ -1,4 +1,5 @@
 from colordescriptor import ColorDescriptor
+from searcher import Searcher
 import argparse
 import glob
 import cv2
@@ -33,4 +34,22 @@ for imagePath in glob.glob(args["dataset"] + "/*.jpg"):
 
 # close the index file
 output.close()
+
+# load the query images and describe it
+query = cv2.imread(args["query"])
+features = cd.describe(query)
+
+# perform the search
+searcher = Searcher(args["index"])
+results = searcher.search(features)
+
+# display the query
+cv2.imshow("Query", query)
+
+# loop over the results
+for (score, resultsID) in results:
+    # load the result image and display it
+    result = cv2.imread(args["result_path"] + "/" + resultID)
+    cv2.imshow("Result", result)
+    cv2.waitKey(0)
 
