@@ -10,28 +10,28 @@ class Searcher:
         # initialize our dictionary of results
         results = {}
 
-    # open the index file for reading
-    with open(self.indexPath) as f:
-        # initialize the CSV reader
-        reader = csv.reader(f)
+        # open the index file for reading
+        with open(self.indexPath) as f:
+            # initialize the CSV reader
+            reader = csv.reader(f)
 
-        # loop over the rows in the index
-        for row in reader:
-            # parse out the image ID and features, then compute the
-            # chi-squared distance between the features in our index
-            # and our query features
-            features = [float(x) for x in row[1:]]
-            d = self.chi2_distance(features, queryFeatures)
+            # loop over the rows in the index
+            for row in reader:
+                # parse out the image ID and features, then compute the
+                # chi-squared distance between the features in our index
+                # and our query features
+                features = [float(x) for x in row[1:]]
+                d = self.chi2_distance(features, queryFeatures)
 
-            results[row[0]] = d
+                results[row[0]] = d
 
-        # close the reader
-        f.close()
+            # close the reader
+            f.close()
 
-    results = sorted([(v, k) for (k, v) in results.items()])
+            results = sorted([(v, k) for (k, v) in results.items()])
 
-    # return our (limited) results
-    return results[:limit]
+            # return our (limited) results
+            return results[:limit]
 
     def chi2_distance(self, histA, histB, eps = 1e-10):
         # compute the chi-squared distance
